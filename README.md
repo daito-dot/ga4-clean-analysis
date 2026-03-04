@@ -1,6 +1,6 @@
 # GA4 Clean Analysis
 
-GA4 のアクセスデータから開発環境・ボット・内部アクセスを自動除外し、外部ユーザーのみのクリーンなデータセットを生成する Claude Code スキル。
+GA4 のアクセスデータから開発環境・ボット・内部アクセスを自動除外し、外部ユーザーのみのクリーンなデータセットを生成する Cowork プラグイン。
 
 ## なぜ必要か
 
@@ -11,7 +11,7 @@ GA4 のデータにはノイズが大量に混ざっています:
 - **データセンター**: Boardman、Ashburn 等からの自動アクセス
 - **社内アクセス**: Direct チャネルに混在する開発者のブラウジング
 
-このスキルは、それらを対話的に識別・除外し、実際の外部ユーザーデータだけで分析できる状態を作ります。
+このプラグインは、それらを対話的に識別・除外し、実際の外部ユーザーデータだけで分析できる状態を作ります。
 
 ## 前提条件
 
@@ -45,9 +45,25 @@ gcloud auth application-default login \
 
 認証情報の保存先（例: `~/.config/gcloud/application_default_credentials.json`）をメモ。
 
-### 3. MCP サーバーの接続
+## インストール
 
-プロジェクトルートに `.mcp.json` を作成:
+### Cowork プラグインとして
+
+Cowork の設定画面からこのリポジトリを追加:
+
+```
+daito-dot/ga4-clean-analysis
+```
+
+### Claude Code スキルとして
+
+```bash
+npx skills add daito-dot/ga4-clean-analysis -g -y
+```
+
+### MCP サーバーの接続
+
+プラグインインストール後、プロジェクトの `.mcp.json` に analytics-mcp を設定:
 
 ```json
 {
@@ -66,28 +82,22 @@ gcloud auth application-default login \
 
 `command` のパスは `which analytics-mcp` で確認してください。
 
-## スキルのインストール
-
-```bash
-npx skills add daito-dot/ga4-clean-analysis@ga4-clean-analysis -g -y
-```
-
 ## 使い方
 
-Claude Code で以下のように呼び出します:
+### コマンドで起動
 
 ```
-/ga4-clean-analysis
+/ga4:clean-data
 ```
 
-または自然言語で:
+### 自然言語で起動
 
 ```
 GA4を分析して
 アクセス解析をクリーンデータで見せて
 ```
 
-### スキルの流れ
+### プラグインの流れ
 
 1. **プロパティ特定** - GA4 アカウント一覧からプロパティを選択
 2. **ノイズ識別** - 5つのディメンションで除外候補を自動検出
@@ -121,6 +131,21 @@ GA4を分析して
 | 地方都市 | PR施策の効果測定に必要 |
 | SNS 流入 | 認知拡大の効果測定に必要 |
 | ブログ記事 | コンテンツマーケの効果測定に必要 |
+
+## プラグイン構成
+
+```
+ga4-clean-analysis/
+├── .claude-plugin/
+│   └── plugin.json          # プラグインマニフェスト
+├── commands/
+│   └── clean-data.md        # /ga4:clean-data コマンド
+├── skills/
+│   └── ga4-clean-analysis/
+│       └── SKILL.md          # クリーンデータ生成ロジック
+├── README.md
+└── LICENSE
+```
 
 ## ライセンス
 

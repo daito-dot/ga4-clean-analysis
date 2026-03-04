@@ -1,0 +1,8 @@
+{
+  "name": "ga4-clean-analysis",
+  "version": "0.1.0",
+  "description": "GA4 MCP接続を使い、開発環境・ボット・内部アクセスを自動除外したクリーンなデータセットを生成する",
+  "author": {
+    "name": "daito-dot"
+  }
+}
