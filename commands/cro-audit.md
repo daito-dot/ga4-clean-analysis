@@ -1,5 +1,4 @@
 ---
-name: cro-audit
 description: "コンバージョン率最適化の分析・監査を実行する"
 ---
 

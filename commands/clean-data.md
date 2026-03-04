@@ -1,5 +1,4 @@
 ---
-name: clean-data
 description: "GA4データから開発ノイズを自動除外し、クリーンなデータセットを生成する"
 ---
 

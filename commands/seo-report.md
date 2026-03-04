@@ -1,5 +1,4 @@
 ---
-name: seo-report
 description: "PageSpeed Insights APIを使ったSEOレポートを生成する"
 ---
 

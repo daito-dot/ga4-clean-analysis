@@ -1,16 +1,12 @@
 {
   "name": "ga4-marketing-toolkit",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "GA4クリーンデータ生成 + CRO・SEO・GEO分析のマーケティングツールキット",
   "author": {
-    "name": "daito-dot"
+    "name": "daito-dot",
+    "url": "https://github.com/daito-dot"
   },
-  "credits": [
-    {"skill": "cro-funnel", "author": "AITYTech", "license": "MIT", "source": "https://github.com/aitytech/agentkits-marketing"},
-    {"skill": "seo-geo", "author": "ReScienceLab", "license": "MIT", "source": "https://github.com/ReScienceLab/opc-skills"},
-    {"skill": "pricing-page-optimizer", "author": "ID8Labs"},
-    {"skill": "marketing-cro", "author": "unknown"},
-    {"skill": "seo-analytics", "author": "unknown"},
-    {"skill": "geo-optimizer", "author": "unknown"}
-  ]
+  "repository": "https://github.com/daito-dot/ga4-clean-analysis",
+  "license": "MIT",
+  "keywords": ["ga4", "analytics", "marketing", "cro", "seo", "geo"]
 }

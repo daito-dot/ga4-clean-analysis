@@ -1,5 +1,4 @@
 ---
-name: geo-audit
 description: "AI検索可視性の監査（ヘッジ密度・クローラビリティ・AgentFacts）"
 ---
 

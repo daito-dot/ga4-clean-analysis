@@ -1,0 +1,13 @@
+{
+  "name": "daito-dot-marketplace",
+  "owner": {
+    "name": "daito-dot"
+  },
+  "plugins": [
+    {
+      "name": "ga4-marketing-toolkit",
+      "source": "./",
+      "description": "GA4クリーンデータ生成 + CRO・SEO・GEO分析のマーケティングツールキット"
+    }
+  ]
+}

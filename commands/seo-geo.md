@@ -1,5 +1,4 @@
 ---
-name: seo-geo
 description: "SEO + GEO（AI検索エンジン最適化）の分析・実装"
 ---
 

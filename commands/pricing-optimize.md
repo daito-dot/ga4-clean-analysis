@@ -1,5 +1,4 @@
 ---
-name: pricing-optimize
 description: "料金ページのコンバージョン最適化"
 ---
 
