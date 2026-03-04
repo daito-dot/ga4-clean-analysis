@@ -1,34 +1,32 @@
-# GA4 Clean Analysis
+# GA4 Marketing Toolkit
 
-GA4 のアクセスデータから開発環境・ボット・内部アクセスを自動除外し、外部ユーザーのみのクリーンなデータセットを生成する Cowork プラグイン。
+GA4 クリーンデータ生成 + CRO・SEO・GEO 分析をまとめたマーケティング Cowork プラグイン。
 
-## なぜ必要か
+## 含まれるスキル
 
-GA4 のデータにはノイズが大量に混ざっています:
-
-- **開発環境**: localhost、Vercel プレビュー、ステージング
-- **ボット**: ヘッドレスブラウザ（800x600 等の異常な解像度）
-- **データセンター**: Boardman、Ashburn 等からの自動アクセス
-- **社内アクセス**: Direct チャネルに混在する開発者のブラウジング
-
-このプラグインは、それらを対話的に識別・除外し、実際の外部ユーザーデータだけで分析できる状態を作ります。
+| コマンド | スキル | 概要 |
+|----------|--------|------|
+| `/ga4:clean-data` | ga4-clean-analysis | GA4データから開発ノイズを自動除外 |
+| `/ga4:cro-audit` | marketing-cro | コンバージョン率最適化の分析・監査 |
+| `/ga4:cro-funnel` | cro-funnel | フルファネルCRO（フォーム〜ペイウォール） |
+| `/ga4:pricing-optimize` | pricing-page-optimizer | 料金ページのコンバージョン最適化 |
+| `/ga4:seo-report` | seo-analytics | PageSpeed InsightsベースのSEOレポート |
+| `/ga4:seo-geo` | seo-geo | SEO + AI検索エンジン最適化 |
+| `/ga4:geo-audit` | geo-optimizer | AI検索可視性の監査 |
 
 ## 前提条件
 
-### 1. Google Analytics MCP サーバー
+### Google Analytics MCP サーバー（clean-data 用）
 
 [google-analytics-mcp](https://github.com/googleanalytics/google-analytics-mcp) のセットアップが必要です。
 
 ```bash
-# pipx をインストール（未導入の場合）
 brew install pipx
 pipx ensurepath
-
-# analytics-mcp をインストール
 pipx install analytics-mcp
 ```
 
-### 2. Google Cloud の設定
+### Google Cloud の設定
 
 1. [Google Cloud Console](https://console.cloud.google.com/) でプロジェクトを選択
 2. 以下の API を有効化:
@@ -43,13 +41,30 @@ gcloud auth application-default login \
   --client-id-file=ダウンロードしたJSON
 ```
 
-認証情報の保存先（例: `~/.config/gcloud/application_default_credentials.json`）をメモ。
+### MCP サーバーの接続
+
+プロジェクトの `.mcp.json` に analytics-mcp を設定:
+
+```json
+{
+  "mcpServers": {
+    "analytics-mcp": {
+      "command": "/path/to/analytics-mcp",
+      "args": [],
+      "env": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/application_default_credentials.json",
+        "GOOGLE_PROJECT_ID": "your-project-id"
+      }
+    }
+  }
+}
+```
+
+`command` のパスは `which analytics-mcp` で確認してください。
 
 ## インストール
 
 ### Cowork プラグインとして
-
-Cowork の設定画面からこのリポジトリを追加:
 
 ```
 daito-dot/ga4-clean-analysis
@@ -61,92 +76,42 @@ daito-dot/ga4-clean-analysis
 npx skills add daito-dot/ga4-clean-analysis -g -y
 ```
 
-### MCP サーバーの接続
-
-プラグインインストール後、プロジェクトの `.mcp.json` に analytics-mcp を設定:
-
-```json
-{
-  "mcpServers": {
-    "analytics-mcp": {
-      "command": "/Users/あなた/.local/bin/analytics-mcp",
-      "args": [],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/あなた/.config/gcloud/application_default_credentials.json",
-        "GOOGLE_PROJECT_ID": "your-project-id"
-      }
-    }
-  }
-}
-```
-
-`command` のパスは `which analytics-mcp` で確認してください。
-
-## 使い方
-
-### コマンドで起動
-
-```
-/ga4:clean-data
-```
-
-### 自然言語で起動
-
-```
-GA4を分析して
-アクセス解析をクリーンデータで見せて
-```
-
-### プラグインの流れ
-
-1. **プロパティ特定** - GA4 アカウント一覧からプロパティを選択
-2. **ノイズ識別** - 5つのディメンションで除外候補を自動検出
-3. **除外判定** - 自動除外 + ユーザー確認で除外対象を確定
-4. **フィルタ構築** - GA4 Data API の `dimension_filter` を自動生成
-5. **フィルタ確認** - 除外前後のセッション数を比較して承認
-
-## ノイズ判定の基準
-
-### 自動除外
-
-| 種別 | 判定ルール |
-|---|---|
-| 非本番ホスト | localhost, *.vercel.app, staging 等 |
-| ボット解像度 | 800x600, 1024x1024 等の異常値 |
-| データセンター | Boardman, Ashburn, Council Bluffs 等 |
-
-### ユーザー確認して除外
-
-| 種別 | 判定ヒント |
-|---|---|
-| Direct チャネル | 社内アクセスの混在率を確認 |
-| 開発系 referral | vercel.com, netlify.com 等 |
-| 管理パス | /admin, /d/, /dashboard 等 |
-| 社内拠点 | 特定都市への集中パターン |
-
-### 除外しない
-
-| 種別 | 理由 |
-|---|---|
-| 地方都市 | PR施策の効果測定に必要 |
-| SNS 流入 | 認知拡大の効果測定に必要 |
-| ブログ記事 | コンテンツマーケの効果測定に必要 |
-
 ## プラグイン構成
 
 ```
-ga4-clean-analysis/
 ├── .claude-plugin/
-│   └── plugin.json          # プラグインマニフェスト
+│   └── plugin.json
 ├── commands/
-│   └── clean-data.md        # /ga4:clean-data コマンド
-├── skills/
-│   └── ga4-clean-analysis/
-│       └── SKILL.md          # クリーンデータ生成ロジック
-├── README.md
-└── LICENSE
+│   ├── clean-data.md
+│   ├── cro-audit.md
+│   ├── cro-funnel.md
+│   ├── pricing-optimize.md
+│   ├── seo-report.md
+│   ├── seo-geo.md
+│   └── geo-audit.md
+└── skills/
+    ├── ga4-clean-analysis/   # オリジナル
+    ├── marketing-cro/
+    ├── cro-funnel/
+    ├── pricing-page-optimizer/
+    ├── seo-analytics/
+    ├── seo-geo/
+    └── geo-optimizer/
 ```
+
+## クレジット
+
+このプラグインには以下のオープンソーススキルが含まれています:
+
+| スキル | 作者 | ライセンス | ソース |
+|--------|------|-----------|--------|
+| cro-funnel | AITYTech | MIT | [agentkits-marketing](https://github.com/aitytech/agentkits-marketing) |
+| seo-geo | ReScienceLab | MIT | [opc-skills](https://github.com/ReScienceLab/opc-skills) |
+| pricing-page-optimizer | ID8Labs | - | - |
+| marketing-cro | - | - | - |
+| seo-analytics | - | - | - |
+| geo-optimizer | - | - | - |
 
 ## ライセンス
 
-MIT
+MIT（ga4-clean-analysis 部分）。バンドルされた各スキルは元の作者のライセンスに従います。

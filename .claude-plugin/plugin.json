@@ -1,8 +1,16 @@
 {
-  "name": "ga4-clean-analysis",
-  "version": "0.1.0",
-  "description": "GA4 MCP接続を使い、開発環境・ボット・内部アクセスを自動除外したクリーンなデータセットを生成する",
+  "name": "ga4-marketing-toolkit",
+  "version": "0.2.0",
+  "description": "GA4クリーンデータ生成 + CRO・SEO・GEO分析のマーケティングツールキット",
   "author": {
     "name": "daito-dot"
-  }
+  },
+  "credits": [
+    {"skill": "cro-funnel", "author": "AITYTech", "license": "MIT", "source": "https://github.com/aitytech/agentkits-marketing"},
+    {"skill": "seo-geo", "author": "ReScienceLab", "license": "MIT", "source": "https://github.com/ReScienceLab/opc-skills"},
+    {"skill": "pricing-page-optimizer", "author": "ID8Labs"},
+    {"skill": "marketing-cro", "author": "unknown"},
+    {"skill": "seo-analytics", "author": "unknown"},
+    {"skill": "geo-optimizer", "author": "unknown"}
+  ]
 }
