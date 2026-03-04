@@ -3,3 +3,4 @@
 *.log
 .claude/
 node_modules/
+CLAUDE.md
